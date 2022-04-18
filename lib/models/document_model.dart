@@ -5,13 +5,13 @@ class DocumentModel {
   String title;
   String time;
   String uid;
-  List<Object> pages;
+  List<String> text = [];
+  List<File> image = [];
 
   DocumentModel({
     this.id,
     this.title,
     this.time,
     this.uid,
-    this.pages,
   });
 }

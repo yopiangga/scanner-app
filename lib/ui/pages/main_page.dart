@@ -10,6 +10,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int bottomNavBarIndex;
   PageController pageController;
+  bool loading = false;
 
   @override
   void initState() {
@@ -21,6 +22,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<DocumentModel> documents =
+        Provider.of<DocumentProvider>(context).documents;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -41,6 +45,16 @@ class _MainPageState extends State<MainPage> {
             },
             children: [],
           ),
+          loading
+              ? Center(
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    child: SpinKitWave(
+                        color: mainColor, type: SpinKitWaveType.start),
+                  ),
+                )
+              : Container(),
           createCustomBottomNavBar(),
           Align(
             alignment: Alignment.bottomCenter,
@@ -51,7 +65,32 @@ class _MainPageState extends State<MainPage> {
               child: FloatingActionButton(
                 elevation: 0,
                 backgroundColor: mainColor,
-                onPressed: () {},
+                onPressed: () async {
+                  setState(() {
+                    loading = true;
+                  });
+                  final result = await pickImage();
+
+                  DocumentModel document = DocumentModel(
+                    id: "add",
+                    time: "123",
+                    uid: "yopiangga",
+                  );
+
+                  document.text.add(result[0]);
+                  document.image.add(result[1]);
+
+                  setState(() {
+                    documents.add(document);
+                    loading = false;
+                  });
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DocumentDetailPage(
+                                document: documents.last,
+                              )));
+                },
                 child: SizedBox(
                   height: 26,
                   width: 26,
