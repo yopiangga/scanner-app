@@ -39,5 +39,6 @@ Future pickImage() async {
     return [dataText, File(image.path)];
   } catch (err) {
     print(err);
+    return false;
   }
 }

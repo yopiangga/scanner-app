@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> {
                 bottomNavBarIndex = index;
               });
             },
-            children: [],
+            children: [DashboardPage(), DocumentsPage()],
           ),
           loading
               ? Center(
@@ -71,25 +71,32 @@ class _MainPageState extends State<MainPage> {
                   });
                   final result = await pickImage();
 
-                  DocumentModel document = DocumentModel(
-                    id: "add",
-                    time: "123",
-                    uid: "yopiangga",
-                  );
+                  if (result == false || result == null) {
+                    setState(() {
+                      loading = false;
+                    });
+                    return;
+                  } else {
+                    DocumentModel document = DocumentModel(
+                      id: "add",
+                      time: "123",
+                      uid: "yopiangga",
+                    );
 
-                  document.text.add(result[0]);
-                  document.image.add(result[1]);
+                    document.text.add(result[0]);
+                    document.image.add(result[1]);
 
-                  setState(() {
-                    documents.add(document);
-                    loading = false;
-                  });
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DocumentDetailPage(
-                                document: documents.last,
-                              )));
+                    setState(() {
+                      documents.add(document);
+                      loading = false;
+                    });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DocumentDetailPage(
+                                  document: documents.last,
+                                )));
+                  }
                 },
                 child: SizedBox(
                   height: 26,

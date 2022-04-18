@@ -11,6 +11,8 @@ class DocumentDetailPage extends StatefulWidget {
 class _DocumentDetailPageState extends State<DocumentDetailPage> {
   bool textView = false;
   bool imageView = false;
+  int expandedIndex = -1;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,244 +22,153 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
           elevation: 0,
           backgroundColor: Colors.white,
           title: Text(
-            "Maca Santara",
-            style: TextStyle(color: mainColor, fontWeight: FontWeight.w600),
+            "Detail Document",
+            style: TextStyle(color: accentColor1, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
         ),
-        body: ListView(
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20))),
-              child: Column(
-                children: [
-                  Text(
-                    "Scan Result",
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: accentColor1),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "You can play the sound of the scanned text, or also start a new scan",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400, color: accentColor1),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 50,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: ElevatedButton(child: Text("Scan Again")),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: ElevatedButton(child: Text("Result Audio")),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            // Expanded(
-            //   child:
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-              child: Column(
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      padding: EdgeInsets.fromLTRB(20, 18, 20, 18),
+        bottomNavigationBar: Container(
+            height: 70,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: isLoading
+                ? SpinKitWave(color: mainColor, type: SpinKitWaveType.start)
+                : BTNDownloadWidget(
+                    title: "Add Page",
+                    onTap: () => {
+                      setState(() {
+                        isLoading = true;
+                      }),
+                      onAdd()
+                    },
+                  )),
+        body: ListView.builder(
+            itemCount: widget.document.text.length,
+            itemBuilder: (context, index) => GestureDetector(
+                  onDoubleTap: () {
+                    setState(() {
+                      if (expandedIndex == index) {
+                        expandedIndex = -1;
+                      } else {
+                        expandedIndex = index;
+                      }
+                    });
+                  },
+                  child: Container(
+                      // height: expand ? double.infinity : 110,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          bottom: 20,
+                          top: index == 0 ? 20 : 0),
+                      padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: accentColor1.withOpacity(0.04),
-                            spreadRadius: 3,
-                            blurRadius: 10,
+                            color: Colors.grey.withOpacity(0.08),
+                            spreadRadius: 4,
+                            blurRadius: 7,
                             offset: Offset(0, 3), // changes position of shadow
                           ),
                         ],
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                child: Icon(
-                                  Icons.text_fields,
-                                  color: mainColor,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
                               Expanded(
-                                  child: Container(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Text",
-                                      style: TextStyle(
+                                      "#" + (index + 1).toString(),
+                                      style: blackTextFont.copyWith(
                                           fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: accentColor1.withOpacity(0.7)),
+                                          fontWeight: FontWeight.w300),
                                     ),
-                                    SizedBox(
-                                      height: 5,
+                                    SizedBox(height: 5),
+                                    Text(
+                                      widget.document.text[index],
+                                      maxLines: 2,
+                                      style: blackTextFont.copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
                                     ),
-                                    Text("Text Scanner Result",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: accentColor1)),
+                                    SizedBox(height: 5),
+                                    // Row(
+                                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                                    //   children: [
+                                    //     Container(
+                                    //       height: 7,
+                                    //       width: 7,
+                                    //       decoration: BoxDecoration(
+                                    //         color: mainColor,
+                                    //         shape: BoxShape.circle,
+                                    //       ),
+                                    //     ),
+                                    //     SizedBox(
+                                    //       width: 5,
+                                    //     ),
+                                    //     Text(
+                                    //       "10:12",
+                                    //       style: blackTextFont.copyWith(
+                                    //           fontSize: 12, fontWeight: FontWeight.w300),
+                                    //     )
+                                    //   ],
+                                    // )
                                   ],
                                 ),
-                              )),
-                              SizedBox(
-                                width: 20,
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    textView = !textView;
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle, color: mainColor),
-                                  child: Icon(
-                                    textView
-                                        ? Icons.keyboard_arrow_down_rounded
-                                        : Icons.chevron_right_rounded,
-                                    color: Colors.white,
-                                  ),
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[100]),
+                                child: Icon(
+                                  MdiIcons.speaker,
+                                  color: Colors.grey[400].withOpacity(1),
                                 ),
                               )
                             ],
                           ),
-                          textView
-                              ? Container(
-                                  margin: EdgeInsets.only(top: 15),
-                                  child: Text(
-                                    widget.document.text.last,
-                                    textAlign: TextAlign.justify,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
+                          expandedIndex == index
+                              ? SizedBox(height: 10)
+                              : SizedBox(),
+                          expandedIndex == index
+                              ? Text(
+                                  widget.document.text[index],
+                                  style: blackTextFont.copyWith(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
                                 )
-                              : Container()
+                              : SizedBox()
                         ],
                       )),
-                  Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      padding: EdgeInsets.fromLTRB(20, 18, 20, 18),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: accentColor1.withOpacity(0.04),
-                            spreadRadius: 3,
-                            blurRadius: 10,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                child: Icon(
-                                  Icons.image_outlined,
-                                  color: mainColor,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                  child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Take Image",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: accentColor1.withOpacity(0.7)),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text("Image Result",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: accentColor1)),
-                                  ],
-                                ),
-                              )),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    imageView = !imageView;
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle, color: mainColor),
-                                  child: Icon(
-                                    imageView
-                                        ? Icons.keyboard_arrow_down_rounded
-                                        : Icons.chevron_right_rounded,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          imageView && widget.document.image.last != null
-                              ? Container(
-                                  margin: EdgeInsets.only(top: 15),
-                                  child: Image.file(widget.document.image.last))
-                              : Container()
-                        ],
-                      )),
-                ],
-              ),
-            ),
-            // )
-          ],
-        ));
+                )));
+  }
+
+  dynamic onAdd() async {
+    setState(() {
+      isLoading = true;
+    });
+    final result = await pickImage();
+
+    if (result == false || result == null) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    } else {
+      setState(() {
+        widget.document.text.add(result[0]);
+        widget.document.image.add(result[1]);
+        isLoading = false;
+      });
+    }
   }
 }
