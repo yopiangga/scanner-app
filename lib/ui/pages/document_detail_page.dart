@@ -40,7 +40,8 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
           backgroundColor: Colors.white,
           title: Text(
             "Detail Document",
-            style: TextStyle(color: accentColor1, fontWeight: FontWeight.w600),
+            style: blackTextFont.copyWith(
+                fontSize: 16, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
         ),

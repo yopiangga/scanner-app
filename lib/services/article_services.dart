@@ -2,7 +2,7 @@ part of 'services.dart';
 
 class ArticleServices {
   static Future<List<ArticleModel>> getArticles({http.Client client}) async {
-    String url = "http://192.168.1.19:3000/api/article/get-articles";
+    String url = baseUrl + "/api/article/get-articles";
 
     client ??= http.Client();
 

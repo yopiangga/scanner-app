@@ -21,3 +21,4 @@ part 'documents_page.dart';
 part 'sign_in_page.dart';
 part 'sign_up_page.dart';
 part 'start_page.dart';
+part 'article_detail_page.dart';

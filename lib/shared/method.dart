@@ -1,5 +1,7 @@
 part of 'shared.dart';
 
+String baseUrl = "http://192.168.1.19:3000";
+
 Future pickImage() async {
   File imageRes;
   dynamic inputImage;

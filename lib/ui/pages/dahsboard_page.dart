@@ -191,76 +191,86 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Container articleCard(ArticleModel e) {
-    return Container(
-        height: 100,
-        width: double.infinity,
-        margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.08),
-              spreadRadius: 4,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  e.tag,
-                  style: blackTextFont.copyWith(
-                      fontSize: 12, fontWeight: FontWeight.w300),
-                ),
-                Text(
-                  e.title,
-                  style: blackTextFont.copyWith(
-                      fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 7,
-                      width: 7,
-                      decoration: BoxDecoration(
-                        color: mainColor,
-                        shape: BoxShape.circle,
+  Widget articleCard(ArticleModel e) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ArticleDetailPage(
+                      article: e,
+                    )));
+      },
+      child: Container(
+          height: 100,
+          width: double.infinity,
+          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.08),
+                spreadRadius: 4,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    e.tag,
+                    style: blackTextFont.copyWith(
+                        fontSize: 12, fontWeight: FontWeight.w300),
+                  ),
+                  Text(
+                    e.title,
+                    style: blackTextFont.copyWith(
+                        fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 7,
+                        width: 7,
+                        decoration: BoxDecoration(
+                          color: mainColor,
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      DateTime.fromMicrosecondsSinceEpoch(int.parse(e.time))
-                          .toString(),
-                      style: blackTextFont.copyWith(
-                          fontSize: 12, fontWeight: FontWeight.w300),
-                    )
-                  ],
-                )
-              ],
-            ),
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey[100],
-                  image: DecorationImage(
-                    image: NetworkImage(e.image),
-                  )),
-            )
-          ],
-        ));
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        DateTime.fromMicrosecondsSinceEpoch(int.parse(e.time))
+                            .toString(),
+                        style: blackTextFont.copyWith(
+                            fontSize: 12, fontWeight: FontWeight.w300),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey[100],
+                    image: DecorationImage(
+                      image: NetworkImage(e.image),
+                    )),
+              )
+            ],
+          )),
+    );
   }
 }
