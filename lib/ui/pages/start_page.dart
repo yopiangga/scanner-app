@@ -5,6 +5,7 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(shareUID);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "766399042984",
+    "project_id": "macasantara",
+    "storage_bucket": "macasantara.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766399042984:android:b8d522603d9daae9d7f99d",
+        "android_client_info": {
+          "package_name": "com.example.scanner_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766399042984-1868bnr73tqoovb9ibrpufsrokcsia9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxSfe8ky4LbJYPSBk2kSgUFhO-XuHx9xc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766399042984-1868bnr73tqoovb9ibrpufsrokcsia9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766399042984:android:e9f89e4607e576e3d7f99d",
+        "android_client_info": {
+          "package_name": "com.macasantara.scanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766399042984-1868bnr73tqoovb9ibrpufsrokcsia9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxSfe8ky4LbJYPSBk2kSgUFhO-XuHx9xc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766399042984-1868bnr73tqoovb9ibrpufsrokcsia9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

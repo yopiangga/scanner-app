@@ -109,6 +109,16 @@ class _SignInPageState extends State<SignInPage> {
                                         setState(() {
                                           isSignIn = true;
                                         });
+
+                                        SignInSignUpResult result =
+                                            await AuthServices.signIn(
+                                                _emailController.text.trim(),
+                                                _passwordController.text
+                                                    .trim());
+                                        setState(() {
+                                          isSignIn = false;
+                                        });
+                                        Navigator.pop(context);
                                       }
                                     : null,
                                 child: Icon(
@@ -129,14 +139,13 @@ class _SignInPageState extends State<SignInPage> {
                           width: 0,
                         ),
                         GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUpPage()));
-                          },
-                          child: Text("Sign Up", style: blueTextFont)
-                        )
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpPage()));
+                            },
+                            child: Text("Sign Up", style: blueTextFont))
                       ],
                     )
                   ],

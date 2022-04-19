@@ -1,6 +1,7 @@
 part of 'shared.dart';
 
 String baseUrl = "http://192.168.1.19:3000";
+String shareUID = "";
 
 Future pickImage() async {
   File imageRes;

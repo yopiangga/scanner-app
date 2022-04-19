@@ -161,7 +161,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 30,
               ),
               FloatingActionButton(
-                onPressed: () {
+                onPressed: () async {
                   if (!(nameController.text.trim() != "" &&
                       emailController.text.trim() != "" &&
                       passwordController.text.trim() != "" &&
@@ -195,10 +195,15 @@ class _SignUpPageState extends State<SignUpPage> {
                       message: "Wrong formatted email address",
                     )..show(context);
                   } else {
-                    nameController.text.trim();
-                    emailController.text.trim();
-                    passwordController.text.trim();
+                    String name = nameController.text.trim();
+                    String email = emailController.text.trim();
+                    String password = passwordController.text.trim();
+                    await AuthServices.signUp(email, password);
+                    Navigator.pop(context);
                   }
+                  // print("Signup");
+                  // await AuthServices.signUp("yopiangga@gmail.com", "123456");
+                  // print("Signup done");
                 },
                 child: Icon(Icons.arrow_forward),
                 elevation: 0,
