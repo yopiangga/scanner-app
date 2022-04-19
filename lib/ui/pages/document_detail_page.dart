@@ -14,6 +14,23 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
   int expandedIndex = -1;
   bool isLoading = false;
 
+  FlutterTts tts = FlutterTts();
+
+  initState() {
+    super.initState();
+    tts.setLanguage('en-US');
+    tts.setSpeechRate(0.4);
+  }
+
+  void dispose() {
+    super.dispose();
+    tts.stop();
+  }
+
+  playAudio(String text) async {
+    tts.speak(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,15 +140,24 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
                                   ],
                                 ),
                               ),
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[100]),
-                                child: Icon(
-                                  MdiIcons.speaker,
-                                  color: Colors.grey[400].withOpacity(1),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  playAudio(widget.document.text[index]);
+                                  print("TTS");
+                                },
+                                child: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey[100]),
+                                  child: Icon(
+                                    MdiIcons.speaker,
+                                    color: Colors.grey[400].withOpacity(1),
+                                  ),
                                 ),
                               )
                             ],

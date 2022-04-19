@@ -8,10 +8,27 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  Future<List<ArticleModel>> _articles;
+
+  void initState() {
+    super.initState();
+    _articles = ArticleServices.getArticles();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<DocumentModel> documents =
         Provider.of<DocumentProvider>(context).documents;
+    List<ArticleModel> articles =
+        Provider.of<ArticleProvider>(context).articles;
+
+    _articles.then((value) {
+      if (articles.length == 0) {
+        articles.addAll(value);
+        setState(() {});
+      }
+    });
+
     return Scaffold(
       body: Container(
         child: ListView(
@@ -111,12 +128,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             Container(
               child: Column(
-                children: [
-                  articleCard(),
-                  articleCard(),
-                  articleCard(),
-                  articleCard(),
-                ],
+                children: articles.map((e) => articleCard(e)).toList(),
               ),
             ),
             SizedBox(
@@ -179,7 +191,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Container articleCard() {
+  Container articleCard(ArticleModel e) {
     return Container(
         height: 100,
         width: double.infinity,
@@ -205,12 +217,12 @@ class _DashboardPageState extends State<DashboardPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Recent App",
+                  e.tag,
                   style: blackTextFont.copyWith(
                       fontSize: 12, fontWeight: FontWeight.w300),
                 ),
                 Text(
-                  "Create two ad banners",
+                  e.title,
                   style: blackTextFont.copyWith(
                       fontSize: 16, fontWeight: FontWeight.w600),
                 ),
@@ -229,7 +241,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       width: 5,
                     ),
                     Text(
-                      "10 Mei 2022",
+                      DateTime.fromMicrosecondsSinceEpoch(int.parse(e.time))
+                          .toString(),
                       style: blackTextFont.copyWith(
                           fontSize: 12, fontWeight: FontWeight.w300),
                     )
@@ -242,7 +255,10 @@ class _DashboardPageState extends State<DashboardPage> {
               height: 50,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey[100]),
+                  color: Colors.grey[100],
+                  image: DecorationImage(
+                    image: NetworkImage(e.image),
+                  )),
             )
           ],
         ));
