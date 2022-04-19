@@ -10,6 +10,8 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
+    List<DocumentModel> documents =
+        Provider.of<DocumentProvider>(context).documents;
     return Scaffold(
       body: Container(
         child: ListView(
@@ -55,7 +57,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text("4 documents",
+                      Text(documents.length.toString() + " documents",
                           style: whiteTextFont.copyWith(
                               fontSize: 24, fontWeight: FontWeight.bold)),
                     ],
@@ -84,13 +86,19 @@ class _DashboardPageState extends State<DashboardPage> {
               height: 120,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  recentCard(),
-                  recentCard(),
-                  recentCard(),
-                  recentCard(),
-                  recentCard(),
-                ],
+                children: documents
+                    .map((e) => GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DocumentDetailPage(
+                                          document: e,
+                                        )));
+                          },
+                          child: recentCard(e.text.first, e.time, "Recent App"),
+                        ))
+                    .toList(),
               ),
             ),
             Container(
@@ -120,7 +128,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Container recentCard() {
+  Container recentCard(String title, String time, String tag) {
     return Container(
       height: 120,
       width: 120,
@@ -135,12 +143,13 @@ class _DashboardPageState extends State<DashboardPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Recent App",
+            tag,
             style: blackTextFont.copyWith(
                 fontSize: 12, fontWeight: FontWeight.w300),
           ),
           Text(
-            "Redesign home screen",
+            title,
+            maxLines: 3,
             style: blackTextFont.copyWith(
                 fontSize: 14, fontWeight: FontWeight.w600),
           ),
@@ -159,7 +168,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 width: 5,
               ),
               Text(
-                "10 Mei 2022",
+                time,
                 style: blackTextFont.copyWith(
                     fontSize: 12, fontWeight: FontWeight.w300),
               )
