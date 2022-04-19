@@ -10,6 +10,8 @@ class DocumentsPage extends StatefulWidget {
 class _DocumentsPageState extends State<DocumentsPage> {
   @override
   Widget build(BuildContext context) {
+    List<DocumentModel> documents =
+        Provider.of<DocumentProvider>(context).documents;
     return Scaffold(
       body: Container(
           child: ListView(
@@ -36,11 +38,19 @@ class _DocumentsPageState extends State<DocumentsPage> {
               )),
           Container(
             child: Column(
-              children: [
-                documentCard(),
-                documentCard(),
-                documentCard(),
-              ],
+              children: documents
+                  .map((e) => GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DocumentDetailPage(
+                                        document: e,
+                                      )));
+                        },
+                        child: documentCard(e.text.first, e.time, "Recent App"),
+                      ))
+                  .toList(),
             ),
           ),
           SizedBox(
@@ -51,7 +61,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
     );
   }
 
-  Container documentCard() {
+  Container documentCard(String title, String time, String tag) {
     return Container(
         height: 180,
         width: double.infinity,
@@ -78,12 +88,13 @@ class _DocumentsPageState extends State<DocumentsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Recent App",
+                    tag,
                     style: blackTextFont.copyWith(
                         fontSize: 12, fontWeight: FontWeight.w300),
                   ),
                   Text(
-                    "lorem ipsum dolor sit amet consectetur adipiscing elit",
+                    title,
+                    maxLines: 4,
                     style: blackTextFont.copyWith(
                         fontSize: 16, fontWeight: FontWeight.w600),
                   ),
@@ -102,7 +113,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
                         width: 5,
                       ),
                       Text(
-                        "10 Mei 2022",
+                        time,
                         style: blackTextFont.copyWith(
                             fontSize: 12, fontWeight: FontWeight.w300),
                       )
