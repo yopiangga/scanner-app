@@ -250,7 +250,9 @@ class _DashboardPageState extends State<DashboardPage> {
                         width: 5,
                       ),
                       Text(
-                        DateTime.fromMicrosecondsSinceEpoch(int.parse(e.time))
+                        DateFormat('dd MMM yyyy, hh:mm a')
+                            .format(DateTime.fromMicrosecondsSinceEpoch(
+                                int.parse(e.time)))
                             .toString(),
                         style: blackTextFont.copyWith(
                             fontSize: 12, fontWeight: FontWeight.w300),

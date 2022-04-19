@@ -12,6 +12,7 @@ import 'package:scanner_app/providers/providers.dart';
 import 'package:scanner_app/services/services.dart';
 import 'package:scanner_app/shared/shared.dart';
 import 'package:scanner_app/ui/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 
 part 'main_page.dart';
 part 'dahsboard_page.dart';
