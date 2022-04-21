@@ -44,6 +44,20 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
                 fontSize: 16, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
+          actions: [
+            GestureDetector(
+              onTap: () async {
+                final result =
+                    await DocumentServices.editDocument(widget.document);
+              },
+              child: Icon(
+                MdiIcons.check,
+              ),
+            ),
+            SizedBox(
+              width: 20,
+            )
+          ],
         ),
         bottomNavigationBar: Container(
             height: 70,

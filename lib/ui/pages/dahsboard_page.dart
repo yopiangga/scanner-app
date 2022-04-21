@@ -9,6 +9,8 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   Future<List<ArticleModel>> _articles;
+  Future<List<DocumentModel>> _documents;
+  int timestamp = DateTime.now().millisecondsSinceEpoch;
 
   void initState() {
     super.initState();
@@ -21,6 +23,9 @@ class _DashboardPageState extends State<DashboardPage> {
         Provider.of<DocumentProvider>(context).documents;
     List<ArticleModel> articles =
         Provider.of<ArticleProvider>(context).articles;
+    auth.User user = Provider.of<auth.User>(context);
+
+    int i = 0;
 
     _articles.then((value) {
       if (articles.length == 0) {
@@ -28,6 +33,15 @@ class _DashboardPageState extends State<DashboardPage> {
         setState(() {});
       }
     });
+
+    if (user != null) {
+      _documents = DocumentServices.getDocuments(uid: user.uid);
+      _documents.then((value) {
+        if (documents.length == 0) {
+          documents.addAll(value);
+        }
+      });
+    }
 
     return Scaffold(
       body: Container(
@@ -40,7 +54,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Hallo, Yopiangga",
+                      "Hallo, The dreamer",
                       style: blackTextFont.copyWith(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -68,13 +82,20 @@ class _DashboardPageState extends State<DashboardPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Today",
+                      Text("A few hours ago",
                           style: whiteTextFont.copyWith(
                               fontSize: 14, fontWeight: FontWeight.w400)),
                       SizedBox(
                         height: 20,
                       ),
-                      Text(documents.length.toString() + " documents",
+                      Text(
+                          documents
+                                  .where((element) =>
+                                      int.parse(element.time) >=
+                                      timestamp - 60 * 60 * 24 * 1000)
+                                  .length
+                                  .toString() +
+                              " documents",
                           style: whiteTextFont.copyWith(
                               fontSize: 24, fontWeight: FontWeight.bold)),
                     ],
@@ -103,19 +124,21 @@ class _DashboardPageState extends State<DashboardPage> {
               height: 120,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: documents
-                    .map((e) => GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DocumentDetailPage(
-                                          document: e,
-                                        )));
-                          },
-                          child: recentCard(e.text.first, e.time, "Recent App"),
-                        ))
-                    .toList(),
+                children: documents.reversed.map((e) {
+                  i++;
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DocumentDetailPage(
+                                    document: e,
+                                  )));
+                    },
+                    child:
+                        recentCard(e.text.first, e.time, recentTime(e.time), i),
+                  );
+                }).toList(),
               ),
             ),
             Container(
@@ -128,7 +151,10 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             Container(
               child: Column(
-                children: articles.map((e) => articleCard(e)).toList(),
+                children: articles.reversed.map((e) {
+                  i++;
+                  return articleCard(e);
+                }).toList(),
               ),
             ),
             SizedBox(
@@ -140,11 +166,12 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Container recentCard(String title, String time, String tag) {
+  Container recentCard(String title, String time, String tag, int index) {
+    // print(int.parse(time));
     return Container(
       height: 120,
       width: 120,
-      margin: EdgeInsets.only(left: 16),
+      margin: EdgeInsets.only(right: 16, left: index == 1 ? 20 : 0),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -180,7 +207,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 width: 5,
               ),
               Text(
-                time,
+                DateFormat('dd MMM yyyy')
+                    .format(DateTime.fromMicrosecondsSinceEpoch(
+                        int.parse(time) * 1000))
+                    .toString(),
                 style: blackTextFont.copyWith(
                     fontSize: 12, fontWeight: FontWeight.w300),
               )
@@ -202,7 +232,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     )));
       },
       child: Container(
-          height: 100,
+          // height: 100,
           width: double.infinity,
           margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
           padding: EdgeInsets.all(20),
@@ -219,47 +249,58 @@ class _DashboardPageState extends State<DashboardPage> {
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    e.tag,
-                    style: blackTextFont.copyWith(
-                        fontSize: 12, fontWeight: FontWeight.w300),
-                  ),
-                  Text(
-                    e.title,
-                    style: blackTextFont.copyWith(
-                        fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 7,
-                        width: 7,
-                        decoration: BoxDecoration(
-                          color: mainColor,
-                          shape: BoxShape.circle,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Admin",
+                      style: blackTextFont.copyWith(
+                          fontSize: 12, fontWeight: FontWeight.w300),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      e.title,
+                      maxLines: 2,
+                      style: blackTextFont.copyWith(
+                          fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 7,
+                          width: 7,
+                          decoration: BoxDecoration(
+                            color: mainColor,
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        DateFormat('dd MMM yyyy, hh:mm a')
-                            .format(DateTime.fromMicrosecondsSinceEpoch(
-                                int.parse(e.time)))
-                            .toString(),
-                        style: blackTextFont.copyWith(
-                            fontSize: 12, fontWeight: FontWeight.w300),
-                      )
-                    ],
-                  )
-                ],
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          DateFormat('dd MMM yyyy, hh:mm a')
+                              .format(DateTime.fromMicrosecondsSinceEpoch(
+                                  int.parse(e.time) * 1000000))
+                              .toString(),
+                          style: blackTextFont.copyWith(
+                              fontSize: 12, fontWeight: FontWeight.w300),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 10,
               ),
               Container(
                 width: 50,
@@ -269,6 +310,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     color: Colors.grey[100],
                     image: DecorationImage(
                       image: NetworkImage(e.image),
+                      fit: BoxFit.cover,
                     )),
               )
             ],

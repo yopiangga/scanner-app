@@ -15,12 +15,13 @@ class StartPage extends StatelessWidget {
             children: [
               Container(
                 height: 136,
-                decoration: BoxDecoration(color: Colors.grey[200]
-                    // image: DecorationImage(
-                    //   image: AssetImage('assets/logo.png'),
-                    //   fit: BoxFit.contain,
-                    // ),
-                    ),
+                decoration: BoxDecoration(
+                  // color: Colors.grey[200]
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/start-animation.png'),
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 70, bottom: 16),

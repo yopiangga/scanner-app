@@ -24,6 +24,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     List<DocumentModel> documents =
         Provider.of<DocumentProvider>(context).documents;
+    auth.User user = Provider.of<auth.User>(context);
 
     return Scaffold(
       body: Stack(
@@ -78,13 +79,18 @@ class _MainPageState extends State<MainPage> {
                     return;
                   } else {
                     DocumentModel document = DocumentModel(
-                      id: "add",
-                      time: "123",
-                      uid: "yopiangga",
+                      id: "1",
+                      time: "0",
+                      uid: user.uid,
                     );
 
                     document.text.add(result[0]);
                     document.image.add(result[1]);
+
+                    final res = await DocumentServices.addDocument(document);
+
+                    document.id = jsonDecode(res.body.toString())['data'];
+                    document.time = jsonDecode(res.body.toString())['data'];
 
                     setState(() {
                       documents.add(document);

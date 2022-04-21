@@ -14,4 +14,17 @@ class DocumentModel {
     this.time,
     this.uid,
   });
+
+  factory DocumentModel.fromJson(Map<String, dynamic> json, String id) {
+    DocumentModel data = DocumentModel(
+      id: id,
+      title: json['title'],
+      time: json['time'].toString(),
+      uid: json['uid'],
+    );
+
+    data.text.addAll(json['text'].split("\\"));
+
+    return data;
+  }
 }

@@ -23,7 +23,7 @@ class ArticleModel {
       time: json['time'],
     );
 
-    data.description.addAll(json['description'].split('\n'));
+    data.description.addAll(json['description'].split('\\n'));
 
     return data;
   }

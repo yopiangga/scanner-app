@@ -1,7 +1,8 @@
 part of 'shared.dart';
 
-String baseUrl = "http://192.168.1.19:3000";
+String baseUrl = "http://192.168.43.119:3000";
 String shareUID = "";
+int timestamp = DateTime.now().millisecondsSinceEpoch;
 
 Future pickImage() async {
   File imageRes;
@@ -44,4 +45,19 @@ Future pickImage() async {
     print(err);
     return false;
   }
+}
+
+String recentTime(String timeString) {
+  int time = int.parse(timeString);
+  if (time >= timestamp - 60 * 60 * 24 * 1000) {
+    return "A few hours ago";
+  } else if (time >= timestamp - 60 * 60 * 24 * 1000 * 7) {
+    return "A few days ago";
+  } else if (time >= timestamp - 60 * 60 * 24 * 1000 * 30) {
+    return "A few weeks ago";
+  } else {
+    return "A long time ago";
+  }
+
+  return "";
 }

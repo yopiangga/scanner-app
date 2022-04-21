@@ -12,11 +12,8 @@ class ArticleServices {
       return [];
     }
 
-    print("ss");
     var data = json.decode(response.body);
     List result = data;
-
-    print(result);
 
     return result
         .map((e) => ArticleModel.fromJson(e['data'], e['id']))

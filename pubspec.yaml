@@ -76,6 +76,7 @@ flutter:
     - assets/images/grade.png
     - assets/images/learning.png
     - assets/images/raising-hand.png
+    - assets/images/start-animation.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

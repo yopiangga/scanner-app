@@ -38,7 +38,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
               )),
           Container(
             child: Column(
-              children: documents
+              children: documents.reversed
                   .map((e) => GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -62,8 +62,11 @@ class _DocumentsPageState extends State<DocumentsPage> {
   }
 
   Container documentCard(String title, String time, String tag) {
+    // print(time);
+    // print(timestamp);
+    // print((int.parse(time) - timestamp) / 1000);
     return Container(
-        height: 180,
+        // height: 180,
         width: double.infinity,
         margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
         padding: EdgeInsets.all(20),
@@ -88,15 +91,21 @@ class _DocumentsPageState extends State<DocumentsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    tag,
+                    recentTime(time),
                     style: blackTextFont.copyWith(
                         fontSize: 12, fontWeight: FontWeight.w300),
+                  ),
+                  SizedBox(
+                    height: 5,
                   ),
                   Text(
                     title,
                     maxLines: 4,
                     style: blackTextFont.copyWith(
                         fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 5,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,7 +122,10 @@ class _DocumentsPageState extends State<DocumentsPage> {
                         width: 5,
                       ),
                       Text(
-                        time,
+                        DateFormat('dd MMM yyyy, hh:mm a')
+                            .format(DateTime.fromMicrosecondsSinceEpoch(
+                                int.parse(time) * 1000))
+                            .toString(),
                         style: blackTextFont.copyWith(
                             fontSize: 12, fontWeight: FontWeight.w300),
                       )
@@ -122,12 +134,19 @@ class _DocumentsPageState extends State<DocumentsPage> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               width: 50,
               height: 50,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.grey[100]),
+              child: Icon(
+                MdiIcons.book,
+                color: mainColor,
+              ),
             )
           ],
         ));
