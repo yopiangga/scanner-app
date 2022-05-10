@@ -34,14 +34,14 @@ class _DashboardPageState extends State<DashboardPage> {
       }
     });
 
-    if (user != null) {
-      _documents = DocumentServices.getDocuments(uid: user.uid);
-      _documents.then((value) {
-        if (documents.length == 0) {
-          documents.addAll(value);
-        }
-      });
-    }
+    // if (user != null) {
+    _documents = DocumentServices.getDocuments(uid: user?.uid ?? "");
+    _documents.then((value) {
+      if (documents.length == 0) {
+        documents.addAll(value);
+      }
+    });
+    // }
 
     return Scaffold(
       body: Container(
