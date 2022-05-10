@@ -18,7 +18,7 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
 
   initState() {
     super.initState();
-    tts.setLanguage('en-US');
+    tts.setLanguage('id-ID');
     tts.setSpeechRate(0.4);
   }
 

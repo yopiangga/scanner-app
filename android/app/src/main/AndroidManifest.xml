@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.scanner_app">
    <application
-        android:label="scanner_app"
+        android:label="Si Maca"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
