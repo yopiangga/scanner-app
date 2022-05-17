@@ -33,18 +33,23 @@ class _SignInPageState extends State<SignInPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 30,
+                      height: 70,
                     ),
                     SizedBox(
                       height: 70,
+                      width: 70,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          // color: Colors.grey[600],
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/logo.png'),
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 70, bottom: 40),
+                      margin: EdgeInsets.only(top: 30, bottom: 40),
                       child: Text("Welcome Back\nExplorer",
                           style: blackTextFont.copyWith(fontSize: 20)),
                     ),
@@ -81,15 +86,6 @@ class _SignInPageState extends State<SignInPage> {
                     SizedBox(
                       height: 6,
                     ),
-                    Row(
-                      children: [
-                        Text("Forgot Password?",
-                            style: greyTextFont.copyWith(
-                                fontSize: 12, fontWeight: FontWeight.w400)),
-                        Text("Get Now",
-                            style: blueTextFont.copyWith(fontSize: 12)),
-                      ],
-                    ),
                     Center(
                       child: Container(
                         width: 50,
@@ -118,7 +114,17 @@ class _SignInPageState extends State<SignInPage> {
                                         setState(() {
                                           isSignIn = false;
                                         });
-                                        Navigator.pop(context);
+                                        if (result?.uid == null)
+                                          FlushbarWidget(
+                                              context, result.message);
+                                        else
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MainPage(
+                                                          uid: result.uid)));
+                                        // print(result.message);
                                       }
                                     : null,
                                 child: Icon(

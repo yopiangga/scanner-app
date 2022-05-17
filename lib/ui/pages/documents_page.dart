@@ -29,9 +29,18 @@ class _DocumentsPageState extends State<DocumentsPage> {
                   SizedBox(
                     height: 26,
                     width: 26,
-                    child: Icon(
-                      MdiIcons.bellOutline,
-                      color: accentColor1,
+                    child: GestureDetector(
+                      onTap: () => {
+                        AuthServices.signOut(),
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignInPage()))
+                      },
+                      child: Icon(
+                        MdiIcons.logout,
+                        color: accentColor1,
+                      ),
                     ),
                   ),
                 ],
@@ -45,8 +54,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => DocumentDetailPage(
-                                        document: e,
-                                      )));
+                                      document: e, length: e.text.length)));
                         },
                         child: documentCard(e.text.first, e.time, "Recent App"),
                       ))

@@ -2,7 +2,8 @@ part of 'pages.dart';
 
 class DocumentDetailPage extends StatefulWidget {
   DocumentModel document;
-  DocumentDetailPage({this.document});
+  int length;
+  DocumentDetailPage({this.document, this.length});
 
   @override
   State<DocumentDetailPage> createState() => _DocumentDetailPageState();
@@ -12,7 +13,9 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
   bool textView = false;
   bool imageView = false;
   int expandedIndex = -1;
+  int audioIndex = -1;
   bool isLoading = false;
+  bool isSave = false;
 
   FlutterTts tts = FlutterTts();
 
@@ -33,6 +36,12 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final _documents = Provider.of<DocumentProvider>(context);
+    // List<DocumentModel> documents = _documents.documents;
+
+    // print(widget.length);
+    // print(widget.document.text.length);
+
     return Scaffold(
         appBar: AppBar(
           foregroundColor: accentColor1,
@@ -46,14 +55,28 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
           centerTitle: true,
           actions: [
             GestureDetector(
-              onTap: () async {
-                final result =
-                    await DocumentServices.editDocument(widget.document);
-              },
-              child: Icon(
-                MdiIcons.check,
-              ),
-            ),
+                onTap: () async {
+                  setState(() {
+                    isSave = true;
+                  });
+                  final result =
+                      await DocumentServices.editDocument(widget.document);
+                  setState(() {
+                    widget.length = widget.document.text.length;
+                    isSave = false;
+                  });
+                },
+                child: isSave
+                    ? SpinKitWave(
+                        color: mainColor,
+                        type: SpinKitWaveType.start,
+                        size: 16,
+                      )
+                    : Icon(
+                        widget.length != widget.document.text.length
+                            ? MdiIcons.contentSave
+                            : MdiIcons.check,
+                      )),
             SizedBox(
               width: 20,
             )
@@ -76,15 +99,6 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
         body: ListView.builder(
             itemCount: widget.document.text.length,
             itemBuilder: (context, index) => GestureDetector(
-                  onDoubleTap: () {
-                    setState(() {
-                      if (expandedIndex == index) {
-                        expandedIndex = -1;
-                      } else {
-                        expandedIndex = index;
-                      }
-                    });
-                  },
                   child: Container(
                       // height: expand ? double.infinity : 110,
                       width: double.infinity,
@@ -113,46 +127,37 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "#" + (index + 1).toString(),
-                                      style: blackTextFont.copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      widget.document.text[index],
-                                      maxLines: 2,
-                                      style: blackTextFont.copyWith(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    SizedBox(height: 5),
-                                    // Row(
-                                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                                    //   children: [
-                                    //     Container(
-                                    //       height: 7,
-                                    //       width: 7,
-                                    //       decoration: BoxDecoration(
-                                    //         color: mainColor,
-                                    //         shape: BoxShape.circle,
-                                    //       ),
-                                    //     ),
-                                    //     SizedBox(
-                                    //       width: 5,
-                                    //     ),
-                                    //     Text(
-                                    //       "10:12",
-                                    //       style: blackTextFont.copyWith(
-                                    //           fontSize: 12, fontWeight: FontWeight.w300),
-                                    //     )
-                                    //   ],
-                                    // )
-                                  ],
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (expandedIndex == index) {
+                                        expandedIndex = -1;
+                                      } else {
+                                        expandedIndex = index;
+                                      }
+                                    });
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "#" + (index + 1).toString(),
+                                        style: blackTextFont.copyWith(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        widget.document.text[index],
+                                        maxLines: 2,
+                                        style: blackTextFont.copyWith(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      SizedBox(height: 5),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -160,18 +165,32 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  playAudio(widget.document.text[index]);
-                                  print("TTS");
+                                  if (audioIndex == index) {
+                                    tts.stop();
+                                  } else {
+                                    playAudio(widget.document.text[index]);
+                                  }
+
+                                  // print("TTS");
+                                  setState(() {
+                                    if (audioIndex == index) {
+                                      audioIndex = -1;
+                                    } else {
+                                      audioIndex = index;
+                                    }
+                                  });
                                 },
                                 child: Container(
                                   width: 50,
                                   height: 50,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey[100]),
+                                      color: (audioIndex == index)
+                                          ? Colors.grey[400]
+                                          : mainColor),
                                   child: Icon(
                                     MdiIcons.speaker,
-                                    color: Colors.grey[400].withOpacity(1),
+                                    color: Colors.white,
                                   ),
                                 ),
                               )

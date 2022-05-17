@@ -13,7 +13,7 @@ class AuthServices {
     } catch (e) {
       // print(e.toString().split("]")[1].trim());
       print(e.toString());
-      return SignInSignUpResult(message: e.toString());
+      return SignInSignUpResult(message: e.toString(), uid: null);
     }
   }
 
@@ -23,8 +23,8 @@ class AuthServices {
       auth.UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       // print(result.user.uid);
-      shareUID = result.user.uid;
-      // return SignInSignUpResult(user: user);
+      // shareUID = result.user.uid;
+      return SignInSignUpResult(uid: result.user.uid, message: "Login Succes");
     } catch (e) {
       print(e.toString());
       // print(e.toString().split("]")[1].trim());
@@ -41,7 +41,8 @@ class AuthServices {
 
 class SignInSignUpResult {
   // final User user;
+  final String uid;
   final String message;
 
-  SignInSignUpResult({this.message = ""});
+  SignInSignUpResult({this.message = "", this.uid = ""});
 }

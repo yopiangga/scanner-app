@@ -1,7 +1,9 @@
 part of 'pages.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key key}) : super(key: key);
+  final String uid;
+
+  const MainPage({this.uid = ""});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -11,10 +13,16 @@ class _MainPageState extends State<MainPage> {
   int bottomNavBarIndex;
   PageController pageController;
   bool loading = false;
+  bool isGetData = true;
+
+  Future<List<ArticleModel>> _getArticles;
+  Future<List<DocumentModel>> _getDocuments;
 
   @override
   void initState() {
     super.initState();
+    _getArticles = ArticleServices.getArticles();
+    _getDocuments = DocumentServices.getDocuments(uid: widget.uid);
 
     bottomNavBarIndex = 0;
     pageController = PageController(initialPage: bottomNavBarIndex);
@@ -22,9 +30,30 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<DocumentModel> documents =
-        Provider.of<DocumentProvider>(context).documents;
+    final _documents = Provider.of<DocumentProvider>(context);
+    List<DocumentModel> documents = _documents.documents;
+    final _articles = Provider.of<ArticleProvider>(context);
+    List<ArticleModel> articles = _articles.articles;
     auth.User user = Provider.of<auth.User>(context);
+
+    if (isGetData) {
+      _getArticles.then((value) {
+        setState(() {
+          _articles.setArticles(value);
+        });
+      });
+
+      _getDocuments.then((value) {
+        setState(() {
+          _documents.setDocuments(value);
+        });
+      });
+      print("getdata");
+
+      setState(() {
+        isGetData = false;
+      });
+    }
 
     return Scaffold(
       body: Stack(

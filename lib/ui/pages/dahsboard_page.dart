@@ -8,13 +8,10 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  Future<List<ArticleModel>> _articles;
-  Future<List<DocumentModel>> _documents;
   int timestamp = DateTime.now().millisecondsSinceEpoch;
 
   void initState() {
     super.initState();
-    _articles = ArticleServices.getArticles();
   }
 
   @override
@@ -27,22 +24,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
     int i = 0;
 
-    _articles.then((value) {
-      if (articles.length == 0) {
-        articles.addAll(value);
-        setState(() {});
-      }
-    });
-
-    // if (user != null) {
-    _documents = DocumentServices.getDocuments(uid: user?.uid ?? "");
-    _documents.then((value) {
-      if (documents.length == 0) {
-        documents.addAll(value);
-      }
-    });
-    // }
-
     return Scaffold(
       body: Container(
         child: ListView(
@@ -54,16 +35,25 @@ class _DashboardPageState extends State<DashboardPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Hallo, The dreamer",
+                      (user != null) ? user.email : "The dreamer",
                       style: blackTextFont.copyWith(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 26,
                       width: 26,
-                      child: Icon(
-                        MdiIcons.bellOutline,
-                        color: accentColor1,
+                      child: GestureDetector(
+                        onTap: () => {
+                          AuthServices.signOut(),
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignInPage()))
+                        },
+                        child: Icon(
+                          MdiIcons.logout,
+                          color: accentColor1,
+                        ),
                       ),
                     ),
                   ],
@@ -112,35 +102,39 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(left: 20, right: 20, bottom: 16, top: 16),
-              child: Text(
-                "Recent Documents",
-                style: blackTextFont.copyWith(
-                    fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              height: 120,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: documents.reversed.map((e) {
-                  i++;
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DocumentDetailPage(
-                                    document: e,
-                                  )));
-                    },
-                    child:
-                        recentCard(e.text.first, e.time, recentTime(e.time), i),
-                  );
-                }).toList(),
-              ),
-            ),
+            documents.length > 0
+                ? Container(
+                    margin: EdgeInsets.only(
+                        left: 20, right: 20, bottom: 16, top: 16),
+                    child: Text(
+                      "Recent Documents",
+                      style: blackTextFont.copyWith(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  )
+                : SizedBox(),
+            documents.length > 0
+                ? Container(
+                    height: 120,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: documents.reversed.map((e) {
+                        i++;
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DocumentDetailPage(
+                                        document: e, length: e.text.length)));
+                          },
+                          child: recentCard(
+                              e.text.first, e.time, recentTime(e.time), i),
+                        );
+                      }).toList(),
+                    ),
+                  )
+                : SizedBox(),
             Container(
               margin: EdgeInsets.only(left: 20, right: 20, bottom: 16, top: 20),
               child: Text(

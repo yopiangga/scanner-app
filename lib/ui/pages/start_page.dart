@@ -5,7 +5,9 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(shareUID);
+    auth.User user = Provider.of<auth.User>(context);
+
+    // print(shareUID);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -46,28 +48,31 @@ class StartPage extends StatelessWidget {
                         MaterialStateProperty.all<Color>(mainColor),
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MainPage()));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                user != null ? MainPage() : SignInPage()));
                   },
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account? ",
+                  Text("Start Fresh Now? ",
                       style:
                           greyTextFont.copyWith(fontWeight: FontWeight.w400)),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignInPage()));
-                    },
-                    child: Text("Sign in",
-                        style: blueTextFont.copyWith(
-                            fontSize: 16, fontWeight: FontWeight.w400)),
+                  SizedBox(
+                    width: 0,
                   ),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()));
+                      },
+                      child: Text("Sign Up", style: blueTextFont))
                 ],
               )
             ]),

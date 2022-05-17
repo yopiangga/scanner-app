@@ -38,12 +38,12 @@ class DocumentServices {
     );
   }
 
-  static Future<http.Response> editDocument(DocumentModel item) async {
+  static Future<bool> editDocument(DocumentModel item) async {
     String url = baseUrl + "/api/document/edit";
 
     String dataText = item.text.join('\\');
 
-    return http.post(
+    http.post(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -53,5 +53,7 @@ class DocumentServices {
         'text': dataText ?? "",
       }),
     );
+
+    return true;
   }
 }

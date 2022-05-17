@@ -13,6 +13,7 @@ import 'package:scanner_app/models/models.dart';
 import 'package:scanner_app/providers/providers.dart';
 import 'package:scanner_app/services/services.dart';
 import 'package:scanner_app/shared/shared.dart';
+import 'package:scanner_app/ui/widgets/flushbar_widget.dart';
 import 'package:scanner_app/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;

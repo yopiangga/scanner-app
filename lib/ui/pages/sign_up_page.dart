@@ -66,16 +66,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           width: 90,
                           height: 90,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.grey[200]
-                              // image: DecorationImage(
-                              //     image: (widget
-                              //                 .registrationData.profileImage ==
-                              //             null)
-                              //         ? AssetImage("assets/user_pic.png")
-                              //         : FileImage(
-                              //             widget.registrationData.profileImage),
-                              //     fit: BoxFit.cover)
-                              )),
+                            shape: BoxShape.circle,
+                            color: Colors.grey[200],
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/logo.png'),
+                              fit: BoxFit.contain,
+                            ),
+                          )),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
