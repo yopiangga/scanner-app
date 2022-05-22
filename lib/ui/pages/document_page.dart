@@ -49,43 +49,46 @@ class _DocumentPageState extends State<DocumentPage> {
             style: blackTextFont.copyWith(
                 fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          centerTitle: true,
+          centerTitle: false,
           actions: [
-            DropdownButtonHideUnderline(
-              child: DropdownButton2(
-                hint: Text(
-                  _language.selectedValue,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).hintColor,
+            Container(
+              width: 100,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                  hint: Text(
+                    _language.selectedValue,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).hintColor,
+                    ),
                   ),
-                ),
-                items: language
-                    .map((item) => DropdownMenuItem<String>(
-                          value: item.title,
-                          child: Text(
-                            item.title,
-                            style: const TextStyle(
-                              fontSize: 14,
+                  items: language
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item.title,
+                            child: Text(
+                              item.title,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        ))
-                    .toList(),
-                value: _language.selectedValue,
-                onChanged: (value) async {
-                  setState(() {
-                    _language.setSelected(
-                        value,
-                        language[language.indexOf(language
-                                .firstWhere((item) => item.title == value))]
-                            .key);
-                    tts.setLanguage(language[language.indexOf(
-                            language.firstWhere((item) => item.title == value))]
-                        .key);
-                  });
-                },
-                buttonHeight: 40,
-                itemHeight: 40,
+                          ))
+                      .toList(),
+                  value: _language.selectedValue,
+                  onChanged: (value) async {
+                    setState(() {
+                      _language.setSelected(
+                          value,
+                          language[language.indexOf(language
+                                  .firstWhere((item) => item.title == value))]
+                              .key);
+                      tts.setLanguage(language[language.indexOf(language
+                              .firstWhere((item) => item.title == value))]
+                          .key);
+                    });
+                  },
+                  buttonHeight: 40,
+                  itemHeight: 40,
+                ),
               ),
             ),
             SizedBox(
@@ -192,18 +195,22 @@ class _DocumentPageState extends State<DocumentPage> {
                                   });
                                 },
                                 child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: (audioIndex == index)
-                                          ? Colors.grey[400]
-                                          : mainColor),
-                                  child: Icon(
-                                    MdiIcons.speaker,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: (audioIndex == index)
+                                            ? Colors.grey[400]
+                                            : mainColor),
+                                    child: (audioIndex == index)
+                                        ? Icon(
+                                            Icons.stop_circle_outlined,
+                                            color: Colors.white,
+                                          )
+                                        : Icon(
+                                            Icons.record_voice_over_rounded,
+                                            color: Colors.white,
+                                          )),
                               )
                             ],
                           ),

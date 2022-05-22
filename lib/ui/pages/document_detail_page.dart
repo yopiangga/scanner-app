@@ -63,6 +63,9 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
                   });
                   final result =
                       await DocumentServices.editDocument(widget.document);
+                  if (result != null) {
+                    _showMaterialTextDialog();
+                  }
                   setState(() {
                     widget.length = widget.document.text.length;
                     isSave = false;
@@ -190,10 +193,15 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
                                       color: (audioIndex == index)
                                           ? Colors.grey[400]
                                           : mainColor),
-                                  child: Icon(
-                                    MdiIcons.speaker,
-                                    color: Colors.white,
-                                  ),
+                                  child: (audioIndex == index)
+                                      ? Icon(
+                                          Icons.stop_circle_outlined,
+                                          color: Colors.white,
+                                        )
+                                      : Icon(
+                                          Icons.record_voice_over_rounded,
+                                          color: Colors.white,
+                                        ),
                                 ),
                               )
                             ],
@@ -232,5 +240,69 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
         isLoading = false;
       });
     }
+  }
+
+  void _showMaterialTextDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)), //this right here
+            child: Container(
+              height: 180,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Text("Success Upload",
+                            style: blackTextFont.copyWith(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 10),
+                        Text(
+                          "Your document has been successfully uploaded",
+                          textAlign: TextAlign.center,
+                          style: blackTextFont.copyWith(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Stack(
+                            children: <Widget>[
+                              Positioned.fill(
+                                child: Container(
+                                  decoration: BoxDecoration(color: mainColor),
+                                ),
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.all(14.0),
+                                  primary: Colors.white,
+                                  textStyle: const TextStyle(fontSize: 16),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Close'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

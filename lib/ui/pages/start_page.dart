@@ -41,7 +41,7 @@ class _StartPageState extends State<StartPage> {
                   style: blackTextFont.copyWith(fontSize: 20),
                 ),
               ),
-              Text("Read & Learn anything with\n Maca Santara App",
+              Text("Read & Learn anything with\n Aisoru App",
                   style: greyTextFont.copyWith(
                       fontSize: 16, fontWeight: FontWeight.w300),
                   textAlign: TextAlign.center),

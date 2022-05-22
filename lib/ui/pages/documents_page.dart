@@ -25,43 +25,48 @@ class _DocumentsPageState extends State<DocumentsPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "My Documents",
-                    style: blackTextFont.copyWith(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: Text(
+                      "My Documents",
+                      style: blackTextFont.copyWith(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      hint: Text(
-                        _language.selectedValue,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).hintColor,
+                  Container(
+                    width: 100,
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton2(
+                        hint: Text(
+                          _language.selectedValue,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).hintColor,
+                          ),
                         ),
-                      ),
-                      items: language
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item.title,
-                                child: Text(
-                                  item.title,
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                        items: language
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item.title,
+                                  child: Text(
+                                    item.title,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                              ))
-                          .toList(),
-                      value: _language.selectedValue,
-                      onChanged: (value) async {
-                        setState(() {
-                          _language.setSelected(
-                              value,
-                              language[language.indexOf(language.firstWhere(
-                                      (item) => item.title == value))]
-                                  .key);
-                        });
-                      },
-                      buttonHeight: 40,
-                      itemHeight: 40,
+                                ))
+                            .toList(),
+                        value: _language.selectedValue,
+                        onChanged: (value) async {
+                          setState(() {
+                            _language.setSelected(
+                                value,
+                                language[language.indexOf(language.firstWhere(
+                                        (item) => item.title == value))]
+                                    .key);
+                          });
+                        },
+                        buttonHeight: 40,
+                        itemHeight: 40,
+                      ),
                     ),
                   ),
                 ],

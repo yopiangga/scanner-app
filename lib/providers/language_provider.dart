@@ -1,12 +1,12 @@
 part of 'providers.dart';
 
 class LanguageProvider with ChangeNotifier {
-  String _selectedValue = "Eng";
+  String _selectedValue = "English";
   String _selectedKey = "en-US";
 
   List<LanguageModel> _items = [
-    LanguageModel(title: "Eng", key: "en-US"),
-    LanguageModel(title: "Ind", key: "id-ID"),
+    LanguageModel(title: "English", key: "en-US"),
+    LanguageModel(title: "Indonesia", key: "id-ID"),
   ];
 
   List<LanguageModel> get items => _items;
