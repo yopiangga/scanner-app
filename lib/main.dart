@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
         stream: AuthServices.userStream,
         builder: ((context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
-            print(snapshot?.data?.uid);
             return StreamProvider.value(
               value: AuthServices.userStream,
               child: MultiProvider(
@@ -32,6 +31,8 @@ class MyApp extends StatelessWidget {
                   ChangeNotifierProvider(create: (context) => UserProvider()),
                   ChangeNotifierProvider(
                       create: (context) => ArticleProvider()),
+                  ChangeNotifierProvider(
+                      create: ((context) => LanguageProvider()))
                 ],
                 child: MaterialApp(
                   debugShowCheckedModeBanner: false,

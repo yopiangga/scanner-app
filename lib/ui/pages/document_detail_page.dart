@@ -16,12 +16,13 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
   int audioIndex = -1;
   bool isLoading = false;
   bool isSave = false;
+  bool getData = true;
 
   FlutterTts tts = FlutterTts();
 
   initState() {
     super.initState();
-    tts.setLanguage('id-ID');
+    tts.setLanguage('en-US');
     tts.setSpeechRate(0.4);
   }
 
@@ -36,11 +37,12 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final _documents = Provider.of<DocumentProvider>(context);
-    // List<DocumentModel> documents = _documents.documents;
+    final _language = Provider.of<LanguageProvider>(context);
+    List<LanguageModel> language = _language.items;
 
-    // print(widget.length);
-    // print(widget.document.text.length);
+    if (getData) {
+      tts.setLanguage(_language.selectedKey);
+    }
 
     return Scaffold(
         appBar: AppBar(

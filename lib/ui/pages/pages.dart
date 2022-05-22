@@ -17,6 +17,7 @@ import 'package:scanner_app/ui/widgets/flushbar_widget.dart';
 import 'package:scanner_app/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 part 'main_page.dart';
 part 'dahsboard_page.dart';

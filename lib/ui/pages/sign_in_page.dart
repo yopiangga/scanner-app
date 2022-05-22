@@ -17,12 +17,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Navigator.pop(context);
-        return;
-      },
-      child: Scaffold(
+      return Scaffold(
           backgroundColor: Colors.white,
           body: Container(
             padding: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -158,7 +153,6 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ],
             ),
-          )),
-    );
+          ));
   }
 }

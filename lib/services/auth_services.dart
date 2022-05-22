@@ -10,10 +10,12 @@ class AuthServices {
           email: email, password: password);
       // print(result.user);
       // return SignInSignUpResult(user: user);
+      return SignInSignUpResult(uid: result.user.uid, message: "SignUp Succes");
     } catch (e) {
       // print(e.toString().split("]")[1].trim());
-      print(e.toString());
-      return SignInSignUpResult(message: e.toString(), uid: null);
+      // print(e.toString());
+      return SignInSignUpResult(
+          message: e.toString().split("]")[1].trim(), uid: null);
     }
   }
 
@@ -26,9 +28,10 @@ class AuthServices {
       // shareUID = result.user.uid;
       return SignInSignUpResult(uid: result.user.uid, message: "Login Succes");
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       // print(e.toString().split("]")[1].trim());
-      return SignInSignUpResult(message: e.toString().split("]")[1].trim());
+      return SignInSignUpResult(
+          message: e.toString().split("]")[1].trim(), uid: null);
     }
   }
 

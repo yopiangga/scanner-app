@@ -107,15 +107,15 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(
                 height: 36,
               ),
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  labelText: "Full name",
-                  hintText: "Full name",
-                ),
-              ),
+              // TextField(
+              //   controller: nameController,
+              //   decoration: InputDecoration(
+              //     border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10)),
+              //     labelText: "Full name",
+              //     hintText: "Full name",
+              //   ),
+              // ),
               SizedBox(
                 height: 16,
               ),
@@ -159,8 +159,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               FloatingActionButton(
                 onPressed: () async {
-                  if (!(nameController.text.trim() != "" &&
-                      emailController.text.trim() != "" &&
+                  if (!(emailController.text.trim() != "" &&
                       passwordController.text.trim() != "" &&
                       retypePasswordController.text.trim() != "")) {
                     Flushbar(
@@ -192,11 +191,15 @@ class _SignUpPageState extends State<SignUpPage> {
                       message: "Wrong formatted email address",
                     )..show(context);
                   } else {
-                    String name = nameController.text.trim();
+                    // String name = nameController.text.trim();
                     String email = emailController.text.trim();
                     String password = passwordController.text.trim();
-                    await AuthServices.signUp(email, password);
-                    Navigator.pop(context);
+                    final result = await AuthServices.signUp(email, password);
+
+                    if (result?.uid == null)
+                      FlushbarWidget(context, result.message);
+                    else
+                      Navigator.pop(context);
                   }
                   // print("Signup");
                   // await AuthServices.signUp("yopiangga@gmail.com", "123456");

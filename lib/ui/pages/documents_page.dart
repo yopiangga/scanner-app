@@ -12,6 +12,10 @@ class _DocumentsPageState extends State<DocumentsPage> {
   Widget build(BuildContext context) {
     List<DocumentModel> documents =
         Provider.of<DocumentProvider>(context).documents;
+
+    final _language = Provider.of<LanguageProvider>(context);
+    List<LanguageModel> language = _language.items;
+
     return Scaffold(
       body: Container(
           child: ListView(
@@ -26,21 +30,38 @@ class _DocumentsPageState extends State<DocumentsPage> {
                     style: blackTextFont.copyWith(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    height: 26,
-                    width: 26,
-                    child: GestureDetector(
-                      onTap: () => {
-                        AuthServices.signOut(),
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignInPage()))
-                      },
-                      child: Icon(
-                        MdiIcons.logout,
-                        color: accentColor1,
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      hint: Text(
+                        _language.selectedValue,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).hintColor,
+                        ),
                       ),
+                      items: language
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item.title,
+                                child: Text(
+                                  item.title,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      value: _language.selectedValue,
+                      onChanged: (value) async {
+                        setState(() {
+                          _language.setSelected(
+                              value,
+                              language[language.indexOf(language.firstWhere(
+                                      (item) => item.title == value))]
+                                  .key);
+                        });
+                      },
+                      buttonHeight: 40,
+                      itemHeight: 40,
                     ),
                   ),
                 ],

@@ -35,7 +35,10 @@ class _DashboardPageState extends State<DashboardPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      (user != null) ? user.email : "The dreamer",
+                      (user != null)
+                          ? ("Hello, " +
+                              user.email.replaceAll('@gmail.com', ''))
+                          : "The dreamer",
                       style: blackTextFont.copyWith(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -48,7 +51,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignInPage()))
+                                  builder: (context) => StartPage()))
                         },
                         child: Icon(
                           MdiIcons.logout,

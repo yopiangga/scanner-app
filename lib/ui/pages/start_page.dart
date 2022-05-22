@@ -1,11 +1,20 @@
 part of 'pages.dart';
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
   const StartPage({Key key}) : super(key: key);
+
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
     auth.User user = Provider.of<auth.User>(context);
+    final _documents = Provider.of<DocumentProvider>(context);
+    List<DocumentModel> documents = _documents.documents;
 
     // print(shareUID);
     return Scaffold(
@@ -39,7 +48,7 @@ class StartPage extends StatelessWidget {
               Container(
                 width: 250,
                 height: 46,
-                margin: EdgeInsets.only(top: 70, bottom: 19),
+                margin: EdgeInsets.only(top: 70),
                 child: ElevatedButton(
                   child: Text("Get Started",
                       style: whiteTextFont.copyWith(fontSize: 16)),
@@ -54,6 +63,55 @@ class StartPage extends StatelessWidget {
                             builder: (context) =>
                                 user != null ? MainPage() : SignInPage()));
                   },
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    loading = true;
+                  });
+                  final result = await pickImage();
+
+                  if (result == false || result == null) {
+                    setState(() {
+                      loading = false;
+                    });
+                    return;
+                  } else {
+                    DocumentModel document = DocumentModel(
+                      id: "1",
+                      time: "0",
+                      uid: "non-login",
+                    );
+
+                    document.text.add(result[0]);
+                    document.image.add(result[1]);
+
+                    setState(() {
+                      documents.add(document);
+                      loading = false;
+                    });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DocumentPage(
+                                  document: documents.last,
+                                )));
+                  }
+                },
+                child: Container(
+                  width: 250,
+                  height: 46,
+                  margin: EdgeInsets.only(top: 15, bottom: 19),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: mainColor),
+                  ),
+                  child: Center(
+                    child: loading ? SpinKitWave(color: mainColor, type: SpinKitWaveType.start, size: 16,) : Text("Login as Guest",
+                        style: whiteTextFont.copyWith(
+                            fontSize: 16, color: mainColor)),
+                  ),
                 ),
               ),
               Row(
