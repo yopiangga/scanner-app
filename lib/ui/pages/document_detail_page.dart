@@ -148,7 +148,7 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
                       } else {
                         String path = await ProsaServices.retriveTTS(
                             job_id: widget.document.job_id);
-                        if(path == ""){
+                        if (path == "") {
                           return;
                         }
                         audioPlayer.play(path);

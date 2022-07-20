@@ -8,6 +8,23 @@ class DocumentsPage extends StatefulWidget {
 }
 
 class _DocumentsPageState extends State<DocumentsPage> {
+  FlutterTts tts = FlutterTts();
+
+  initState() {
+    super.initState();
+    tts.setLanguage('en-US');
+    tts.setSpeechRate(0.4);
+  }
+
+  void dispose() {
+    super.dispose();
+    tts.stop();
+  }
+
+  playAudio(String text) async {
+    tts.speak(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<DocumentModel> documents =
@@ -26,10 +43,15 @@ class _DocumentsPageState extends State<DocumentsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
-                      "My Documents",
-                      style: blackTextFont.copyWith(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                    child: GestureDetector(
+                      onDoubleTap: () {
+                        playAudio("My Documents");
+                      },
+                      child: Text(
+                        "My Documents",
+                        style: blackTextFont.copyWith(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                   Container(
@@ -72,20 +94,25 @@ class _DocumentsPageState extends State<DocumentsPage> {
                 ],
               )),
           documents.isEmpty
-              ? Container(
-                  height: MediaQuery.of(context).size.height - 140,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.file_copy_rounded,
-                          size: 44, color: accentColor1),
-                      SizedBox(height: 20),
-                      Text(
-                        "No Saved Documents",
-                        style: blackTextFont,
-                      )
-                    ],
-                  ))
+              ? GestureDetector(
+                  onDoubleTap: () {
+                    playAudio("No Saved Documents");
+                  },
+                  child: Container(
+                      height: MediaQuery.of(context).size.height - 140,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.file_copy_rounded,
+                              size: 44, color: accentColor1),
+                          SizedBox(height: 20),
+                          Text(
+                            "No Saved Documents",
+                            style: blackTextFont,
+                          )
+                        ],
+                      )),
+                )
               : Container(
                   child: Column(
                     children: documents.reversed

@@ -10,6 +10,23 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   bool loading = false;
 
+  FlutterTts tts = FlutterTts();
+
+  initState() {
+    super.initState();
+    tts.setLanguage('en-US');
+    tts.setSpeechRate(0.4);
+  }
+
+  void dispose() {
+    super.dispose();
+    tts.stop();
+  }
+
+  playAudio(String text) async {
+    tts.speak(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     auth.User user = Provider.of<auth.User>(context);
@@ -24,27 +41,42 @@ class _StartPageState extends State<StartPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: 136,
-                decoration: BoxDecoration(
-                  // color: Colors.grey[200]
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/start-animation.png'),
-                    fit: BoxFit.contain,
+              GestureDetector(
+                onDoubleTap: () {
+                  playAudio("Let's Read");
+                },
+                child: Container(
+                  height: 136,
+                  decoration: BoxDecoration(
+                    // color: Colors.grey[200]
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/start-animation.png'),
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 70, bottom: 16),
-                child: Text(
-                  "New Experience",
-                  style: blackTextFont.copyWith(fontSize: 20),
+                child: GestureDetector(
+                  onDoubleTap: () {
+                    playAudio("New Experience");
+                  },
+                  child: Text(
+                    "New Experience",
+                    style: blackTextFont.copyWith(fontSize: 20),
+                  ),
                 ),
               ),
-              Text("Read & Learn anything with\n Si Maca App",
-                  style: greyTextFont.copyWith(
-                      fontSize: 16, fontWeight: FontWeight.w300),
-                  textAlign: TextAlign.center),
+              GestureDetector(
+                onDoubleTap: () {
+                  playAudio("Read & Learn anything with Si Maca App");
+                },
+                child: Text("Read & Learn anything with\n Si Maca App",
+                    style: greyTextFont.copyWith(
+                        fontSize: 16, fontWeight: FontWeight.w300),
+                    textAlign: TextAlign.center),
+              ),
               Container(
                 width: 250,
                 height: 46,
@@ -123,9 +155,14 @@ class _StartPageState extends State<StartPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Start Fresh Now? ",
-                      style:
-                          greyTextFont.copyWith(fontWeight: FontWeight.w400)),
+                  GestureDetector(
+                    onDoubleTap: () {
+                      playAudio("Start Fresh Now? Sign Up");
+                    },
+                    child: Text("Start Fresh Now? ",
+                        style:
+                            greyTextFont.copyWith(fontWeight: FontWeight.w400)),
+                  ),
                   SizedBox(
                     width: 0,
                   ),

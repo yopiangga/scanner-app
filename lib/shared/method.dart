@@ -1,7 +1,7 @@
 part of 'shared.dart';
 
-String baseUrl = "http://172.16.102.56:3000";
-// String baseUrl = "https://macasantara-server.vercel.app";
+// String baseUrl = "http://172.16.102.56:3000";
+String baseUrl = "https://macasantara-server.vercel.app";
 String shareUID = "";
 int timestamp = DateTime.now().millisecondsSinceEpoch;
 

@@ -10,8 +10,21 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int timestamp = DateTime.now().millisecondsSinceEpoch;
 
-  void initState() {
+  FlutterTts tts = FlutterTts();
+
+  initState() {
     super.initState();
+    tts.setLanguage('en-US');
+    tts.setSpeechRate(0.4);
+  }
+
+  void dispose() {
+    super.dispose();
+    tts.stop();
+  }
+
+  playAudio(String text) async {
+    tts.speak(text);
   }
 
   @override
@@ -34,13 +47,18 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      (user != null)
-                          ? ("Hello, " +
-                              user.email.replaceAll('@gmail.com', ''))
-                          : "The dreamer",
-                      style: blackTextFont.copyWith(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                    GestureDetector(
+                      onDoubleTap: () {
+                        playAudio("Hello");
+                      },
+                      child: Text(
+                        (user != null)
+                            ? ("Hello, " +
+                                user.email.replaceAll('@gmail.com', ''))
+                            : "The dreamer",
+                        style: blackTextFont.copyWith(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
                     SizedBox(
                       height: 26,
@@ -61,58 +79,69 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ],
                 )),
-            Container(
-              width: double.infinity,
-              height: 120,
-              margin: EdgeInsets.only(left: 20, bottom: 10, right: 20, top: 10),
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20), color: mainColor),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("A few hours ago",
-                          style: whiteTextFont.copyWith(
-                              fontSize: 14, fontWeight: FontWeight.w400)),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                          documents
-                                  .where((element) =>
-                                      int.parse(element.time) >=
-                                      timestamp - 60 * 60 * 24 * 1000)
-                                  .length
-                                  .toString() +
-                              " documents",
-                          style: whiteTextFont.copyWith(
-                              fontSize: 24, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        // borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                      image: AssetImage("assets/images/grade.png"),
-                    )),
-                  )
-                ],
+            GestureDetector(
+              onDoubleTap: () {
+                playAudio("Document a few hours ago");
+              },
+              child: Container(
+                width: double.infinity,
+                height: 120,
+                margin:
+                    EdgeInsets.only(left: 20, bottom: 10, right: 20, top: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20), color: mainColor),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("A few hours ago",
+                            style: whiteTextFont.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w400)),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                            documents
+                                    .where((element) =>
+                                        int.parse(element.time) >=
+                                        timestamp - 60 * 60 * 24 * 1000)
+                                    .length
+                                    .toString() +
+                                " documents",
+                            style: whiteTextFont.copyWith(
+                                fontSize: 24, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          // borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                        image: AssetImage("assets/images/grade.png"),
+                      )),
+                    )
+                  ],
+                ),
               ),
             ),
             documents.length > 0
                 ? Container(
                     margin: EdgeInsets.only(
                         left: 20, right: 20, bottom: 16, top: 16),
-                    child: Text(
-                      "Recent Documents",
-                      style: blackTextFont.copyWith(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+                    child: GestureDetector(
+                      onDoubleTap: () {
+                        playAudio("Recent Documents");
+                      },
+                      child: Text(
+                        "Recent Documents",
+                        style: blackTextFont.copyWith(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   )
                 : SizedBox(),
@@ -140,10 +169,15 @@ class _DashboardPageState extends State<DashboardPage> {
                 : SizedBox(),
             Container(
               margin: EdgeInsets.only(left: 20, right: 20, bottom: 16, top: 20),
-              child: Text(
-                "Articles",
-                style: blackTextFont.copyWith(
-                    fontSize: 18, fontWeight: FontWeight.bold),
+              child: GestureDetector(
+                onDoubleTap: () {
+                  playAudio("Articles");
+                },
+                child: Text(
+                  "Articles",
+                  style: blackTextFont.copyWith(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             Container(

@@ -6,16 +6,27 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  FlutterTts tts = FlutterTts();
+
+  initState() {
+    super.initState();
+    tts.setLanguage('en-US');
+    tts.setSpeechRate(0.4);
+  }
+
+  void dispose() {
+    super.dispose();
+    tts.stop();
+  }
+
+  playAudio(String text) async {
+    tts.speak(text);
+  }
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController retypePasswordController = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +58,15 @@ class _SignUpPageState extends State<SignUpPage> {
                           )),
                     ),
                     Center(
-                      child: Text(
-                        "Create New\nAccount",
-                        style: blackTextFont.copyWith(fontSize: 20),
-                        textAlign: TextAlign.center,
+                      child: GestureDetector(
+                        onDoubleTap: (){
+                          playAudio("Create New Account");
+                        },
+                        child: Text(
+                          "Create New\nAccount",
+                          style: blackTextFont.copyWith(fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     )
                   ],
@@ -62,17 +78,22 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     Align(
                       alignment: Alignment.topCenter,
-                      child: Container(
-                          width: 90,
-                          height: 90,
-                          decoration: BoxDecoration(
-                            // shape: BoxShape.circle,
-                            color: Colors.transparent,
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/logo.png'),
-                              fit: BoxFit.contain,
-                            ),
-                          )),
+                      child: GestureDetector(
+                        onDoubleTap: (){
+                          playAudio("Si Maca");
+                        },
+                        child: Container(
+                            width: 90,
+                            height: 90,
+                            decoration: BoxDecoration(
+                              // shape: BoxShape.circle,
+                              color: Colors.transparent,
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/logo.png'),
+                                fit: BoxFit.contain,
+                              ),
+                            )),
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
