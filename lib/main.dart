@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
                 ],
                 child: MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  title: 'Aisoru Scanner',
+                  title: 'Si Maca',
                   home: snapshot.data != null
                       ? MainPage(uid: snapshot?.data?.uid)
                       : StartPage(),
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             );
           } else {
             return MaterialApp(
-              title: 'Aisoru Scanner',
+              title: 'Si Maca',
               debugShowCheckedModeBanner: false,
               home: Splash(),
             );

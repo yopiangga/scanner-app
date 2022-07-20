@@ -34,6 +34,7 @@ class DocumentServices {
         'time': item.time ?? "",
         'text': item.text.first ?? "",
         'uid': item.uid ?? "",
+        'job_id': item.job_id ?? ""
       }),
     );
   }
@@ -51,6 +52,7 @@ class DocumentServices {
       body: jsonEncode(<String, String>{
         'id': item.id,
         'text': dataText ?? "",
+        'job_id': item.job_id ?? "",
       }),
     );
 

@@ -1,10 +1,10 @@
 part of 'widgets.dart';
 
-class BTNAddWidget extends StatelessWidget {
+class BTNIconWidget extends StatelessWidget {
   String title;
   dynamic onTap;
 
-  BTNAddWidget({this.title, this.onTap});
+  BTNIconWidget({this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {

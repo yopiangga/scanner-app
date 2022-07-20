@@ -71,22 +71,40 @@ class _DocumentsPageState extends State<DocumentsPage> {
                   ),
                 ],
               )),
-          Container(
-            child: Column(
-              children: documents.reversed
-                  .map((e) => GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DocumentDetailPage(
-                                      document: e, length: e.text.length)));
-                        },
-                        child: documentCard(e.text.first, e.time, "Recent App"),
-                      ))
-                  .toList(),
-            ),
-          ),
+          documents.isEmpty
+              ? Container(
+                  height: MediaQuery.of(context).size.height - 140,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.file_copy_rounded,
+                          size: 44, color: accentColor1),
+                      SizedBox(height: 20),
+                      Text(
+                        "No Saved Documents",
+                        style: blackTextFont,
+                      )
+                    ],
+                  ))
+              : Container(
+                  child: Column(
+                    children: documents.reversed
+                        .map((e) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DocumentDetailPage(
+                                                document: e,
+                                                length: e.text.length)));
+                              },
+                              child: documentCard(
+                                  e.text.first, e.time, "Recent App"),
+                            ))
+                        .toList(),
+                  ),
+                ),
           SizedBox(
             height: 80,
           )

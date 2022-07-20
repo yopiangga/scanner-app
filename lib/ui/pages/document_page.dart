@@ -101,7 +101,7 @@ class _DocumentPageState extends State<DocumentPage> {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: isLoading
                 ? SpinKitWave(color: mainColor, type: SpinKitWaveType.start)
-                : BTNDownloadWidget(
+                : BTNAddWidget(
                     title: "Add Page",
                     onTap: () => {
                       setState(() {

@@ -41,7 +41,7 @@ class _StartPageState extends State<StartPage> {
                   style: blackTextFont.copyWith(fontSize: 20),
                 ),
               ),
-              Text("Read & Learn anything with\n Aisoru App",
+              Text("Read & Learn anything with\n Si Maca App",
                   style: greyTextFont.copyWith(
                       fontSize: 16, fontWeight: FontWeight.w300),
                   textAlign: TextAlign.center),
@@ -108,9 +108,15 @@ class _StartPageState extends State<StartPage> {
                     border: Border.all(color: mainColor),
                   ),
                   child: Center(
-                    child: loading ? SpinKitWave(color: mainColor, type: SpinKitWaveType.start, size: 16,) : Text("Login as Guest",
-                        style: whiteTextFont.copyWith(
-                            fontSize: 16, color: mainColor)),
+                    child: loading
+                        ? SpinKitWave(
+                            color: mainColor,
+                            type: SpinKitWaveType.start,
+                            size: 16,
+                          )
+                        : Text("Login as Guest",
+                            style: whiteTextFont.copyWith(
+                                fontSize: 16, color: mainColor)),
                   ),
                 ),
               ),

@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
           _documents.setDocuments(value);
         });
       });
-      print("getdata");
+      // print("getdata");
 
       setState(() {
         isGetData = false;
@@ -115,6 +115,11 @@ class _MainPageState extends State<MainPage> {
 
                     document.text.add(result[0]);
                     document.image.add(result[1]);
+
+                    final resJob = await ProsaServices.submitTTS(document.text);
+                    final jobId = jsonDecode(resJob.body)['job_id'];
+
+                    document.job_id = jobId;
 
                     final res = await DocumentServices.addDocument(document);
 

@@ -10,3 +10,4 @@ import 'package:firebase_core/firebase_core.dart';
 part 'article_services.dart';
 part 'auth_services.dart';
 part 'document_services.dart';
+part 'prosa_services.dart';

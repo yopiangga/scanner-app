@@ -1,7 +1,7 @@
 part of 'shared.dart';
 
-// String baseUrl = "http://192.168.1.8:3000";
-String baseUrl = "https://macasantara-server.vercel.app";
+String baseUrl = "http://172.16.102.56:3000";
+// String baseUrl = "https://macasantara-server.vercel.app";
 String shareUID = "";
 int timestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -43,7 +43,7 @@ Future pickImage() async {
 
     return [dataText, File(image.path)];
   } catch (err) {
-    print(err);
+    // print(err);
     return false;
   }
 }
